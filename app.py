@@ -80,8 +80,28 @@ def index():
         # Confidence (using compound score as a percentage)
         confidence = abs(compound) * 100  # Absolute value for display purposes
 
+        # Map emotion to GIF
+        gif_mapping = {
+            "Happy": "cartoon-girl-happy.gif",
+            "Sad": "cartoon-girl-sad.gif",
+            "Angry": "cartoon-girl-angry.gif",
+            "Surprised": "cartoon-girl-surprised.gif",
+            "Confused": "cartoon-girl-confused.gif",
+            "Neutral": "cartoon-girl-neutral.gif",
+            "Frustrated": "cartoon-girl-angry.gif",  # Fallback to Angry
+            "Excited": "cartoon-girl-happy.gif",  # Fallback to Happy
+            "Disappointed": "cartoon-girl-sad.gif"  # Fallback to Sad
+        }
+
+        # Get the GIF path
+        gif_filename = gif_mapping.get(emotion, "cartoon-girl-neutral.gif")  # Default to Neutral if emotion not found
+        gif_path = f"static/{gif_filename}"
+
+        # Debug print to log emotion and GIF path
+        print(f"Detected Emotion: {emotion}, GIF Path: {gif_path}")
+
     return render_template('index.html', input_text=input_text, sentiment=sentiment, 
-                         emotion=emotion, confidence=confidence, scores=scores)
+                         emotion=emotion, confidence=confidence, scores=scores, gif_path=gif_path)
 
 if __name__ == '__main__':
     import os
