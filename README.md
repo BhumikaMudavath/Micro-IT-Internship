@@ -8,3 +8,18 @@ __Emotion Detection:__ Identifies emotions like Happy, Sad, Angry, etc., using s
 __Visual Feedback:__ Displays a bar chart of sentiment scores (Positive, Negative, Neutral) using Chart.js.<br>
 __Animated GIFs:__ Shows a cartoon girl GIF that matches the detected emotion.<br>
 __Responsive UI:__ Styled with Bootstrap and custom CSS for a user-friendly interface.<br>
+### Project Structure
+Sentiment-Analysis-Tool/
+├── app.py
+├── templates/
+│   └── index.html
+├── static/
+│   ├── cartoon-girl-happy.gif
+│   ├── cartoon-girl-sad.gif
+│   ├── cartoon-girl-angry.gif
+│   ├── cartoon-girl-surprised.gif
+│   ├── cartoon-girl-confused.gif
+│   ├── cartoon-girl-neutral.gif
+│   └── background.jpg
+├── requirements.txt
+└── README.md
