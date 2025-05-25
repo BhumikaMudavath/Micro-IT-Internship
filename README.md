@@ -9,17 +9,17 @@ __Visual Feedback:__ Displays a bar chart of sentiment scores (Positive, Negativ
 __Animated GIFs:__ Shows a cartoon girl GIF that matches the detected emotion.<br>
 __Responsive UI:__ Styled with Bootstrap and custom CSS for a user-friendly interface.<br>
 ### Project Structure
-Sentiment-Analysis-Tool/
-├── app.py
-├── templates/
-│   └── index.html
-├── static/
-│   ├── cartoon-girl-happy.gif
-│   ├── cartoon-girl-sad.gif
-│   ├── cartoon-girl-angry.gif
-│   ├── cartoon-girl-surprised.gif
-│   ├── cartoon-girl-confused.gif
-│   ├── cartoon-girl-neutral.gif
-│   └── background.jpg
-├── requirements.txt
-└── README.md
+Sentiment-Analysis-Tool/<br>
+├── app.py<br>
+├── templates/<br>
+│   └── index.html<br>
+├── static/<br>
+│   ├── cartoon-girl-happy.gif<br>
+│   ├── cartoon-girl-sad.gif<br>
+│   ├── cartoon-girl-angry.gif<br>
+│   ├── cartoon-girl-surprised.gif<br>
+│   ├── cartoon-girl-confused.gif<br>
+│   ├── cartoon-girl-neutral.gif<br>
+│   └── background.jpg<br>
+├── requirements.txt<br>
+└── README.md<br>
