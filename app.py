@@ -10,6 +10,7 @@ def index():
     emotion = None
     confidence = None
     scores = None
+    gif_path = "static/cartoon-girl-neutral.gif"  # Default GIF for GET requests
 
     if request.method == 'POST':
         input_text = request.form['text'].lower()  # Convert to lowercase for easier keyword matching
