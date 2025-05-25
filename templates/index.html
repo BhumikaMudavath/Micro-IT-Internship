@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: url('/static/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #a1c4fd;
+        }
+        .container {
+            padding-top: 40px;
+        }
+        h1 {
+            color: #ff6f61;
+            text-shadow: 2px 2px #ffd700;
+        }
+        .card {
+            max-width: 700px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6f61, #ffcc5c);
+            border: none;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover {
+            transform: scale(1.1);
+            background: linear-gradient(45deg, #ffcc5c, #ff6f61);
+        }
+        .form-control {
+            border: 2px solid #ffcc5c;
+            border-radius: 10px;
+        }
+        .sentiment-positive { color: #28a745; text-shadow: 1px 1px #b3ff66; }
+        .sentiment-negative { color: #dc3545; text-shadow: 1px 1px #ff9999; }
+        .sentiment-neutral { color: #ffc107; text-shadow: 1px 1px #ffe066; }
+        .emotion-happy, .emotion-excited { color: #28a745; text-shadow: 1px 1px #b3ff66; }
+        .emotion-sad, .emotion-disappointed { color: #1e90ff; text-shadow: 1px 1px #66b3ff; }
+        .emotion-angry, .emotion-frustrated { color: #dc3545; text-shadow: 1px 1px #ff9999; }
+        .emotion-surprised { color: #ff00ff; text-shadow: 1px 1px #ff99ff; }
+        .emotion-confused { color: #808080; text-shadow: 1px 1px #cccccc; }
+        canvas { max-width: 400px; margin: 20px auto; }
+
+        /* Animation Styles */
+        .animation-container {
+            text-align: center;
+            margin: 20px 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            width: 300px;
+            height: 350px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .animation-container.show {
+            opacity: 1;
+        }
+        .character-gif {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Sentiment Analysis Tool</h1>
+        <div class="card p-4 shadow-sm">
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="text" class="form-label">Enter Text:</label>
+                    <textarea class="form-control" id="text" name="text" rows="4" placeholder="Type your review here...">{{ input_text }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Analyze Sentiment</button>
+            </form>
+            {% if sentiment %}
+                <div class="mt-4">
+                    <!-- GIF Animation -->
+                    <div class="animation-container show">
+                        <img id="character-gif" class="character-gif" src="/static/cartoon-girl-neutral.gif" alt="Cartoon Girl Emotion">
+                    </div>
+                    <h3>Sentiment: 
+                        {% if sentiment == 'Positive' %}
+                            <span class="sentiment-positive">{{ sentiment }} 😊</span>
+                        {% elif sentiment == 'Negative' %}
+                            <span class="sentiment-negative">{{ sentiment }} 😞</span>
+                        {% else %}
+                            <span class="sentiment-neutral">{{ sentiment }} 😐</span>
+                        {% endif %}
+                    </h3>
+                    <h4>Emotion: 
+                        {% if emotion == 'Happy' %}
+                            <span class="emotion-happy">{{ emotion }} 😄</span>
+                        {% elif emotion == 'Sad' %}
+                            <span class="emotion-sad">{{ emotion }} 😢</span>
+                        {% elif emotion == 'Angry' %}
+                            <span class="emotion-angry">{{ emotion }} 😣</span>
+                        {% elif emotion == 'Excited' %}
+                            <span class="emotion-excited">{{ emotion }} 🎉</span>
+                        {% elif emotion == 'Surprised' %}
+                            <span class="emotion-surprised">{{ emotion }} 😲</span>
+                        {% elif emotion == 'Disappointed' %}
+                            <span class="emotion-disappointed">{{ emotion }} 😔</span>
+                        {% elif emotion == 'Frustrated' %}
+                            <span class="emotion-frustrated">{{ emotion }} 😫</span>
+                        {% elif emotion == 'Confused' %}
+                            <span class="emotion-confused">{{ emotion }} 😕</span>
+                        {% else %}
+                            <span class="sentiment-neutral">{{ emotion }} 😐</span>
+                        {% endif %}
+                    </h4>
+                    {% if confidence %}
+                        <p>Confidence: {{ confidence | round(2) }}%</p>
+                    {% endif %}
+                    {% if scores %}
+                        <canvas id="sentimentChart"></canvas>
+                        <script>
+                            const ctx = document.getElementById('sentimentChart').getContext('2d');
+                            new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: ['Positive', 'Negative', 'Neutral'],
+                                    datasets: [{
+                                        label: 'Sentiment Scores',
+                                        data: [{{ scores.pos }}, {{ scores.neg }}, {{ scores.neu }}],
+                                        backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
+                                        borderColor: ['#1d7d3b', '#b02a37', '#d39e00'],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: { y: { beginAtZero: true, max: 1 } },
+                                    plugins: { legend: { display: false } }
+                                }
+                            });
+                        </script>
+                    {% endif %}
+                    <!-- JavaScript to Switch GIF Based on Emotion -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const characterGif = document.getElementById('character-gif');
+                            let emotion = "{{ emotion | lower }}"; // Use Jinja2 filter to lowercase
+                            emotion = emotion.trim(); // Trim any whitespace
+                            console.log("Detected emotion:", emotion); // Debugging
+
+                            const gifMap = {
+                                'happy': '/static/cartoon-girl-happy.gif',
+                                'excited': '/static/cartoon-girl-happy.gif',
+                                'sad': '/static/cartoon-girl-sad.gif',
+                                'disappointed': '/static/cartoon-girl-sad.gif',
+                                'angry': '/static/cartoon-girl-angry.gif',
+                                'frustrated': '/static/cartoon-girl-angry.gif',
+                                'surprised': '/static/cartoon-girl-surprised.gif',
+                                'confused': '/static/cartoon-girl-confused.gif',
+                                'neutral': '/static/cartoon-girl-neutral.gif'
+                            };
+
+                            if (!(emotion in gifMap)) {
+                                console.error("Emotion not found in gifMap:", emotion);
+                                emotion = 'neutral'; // Fallback to neutral if emotion is invalid
+                            }
+
+                            const gifSrc = `${gifMap[emotion]}?t=${Date.now()}`; // Cache-busting query parameter
+                            console.log("Selected GIF:", gifSrc); // Debugging
+                            characterGif.src = gifSrc; // Update the GIF source
+                        });
+                    </script>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
