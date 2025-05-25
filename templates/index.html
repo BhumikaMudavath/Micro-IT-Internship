@@ -88,9 +88,11 @@
             {% if sentiment %}
                 <div class="mt-4">
                     <!-- GIF Animation -->
-                    <div class="animation-container show">
-                        <img id="character-gif" class="character-gif" src="/static/cartoon-girl-neutral.gif" alt="Cartoon Girl Emotion">
-                    </div>
+                    {% if gif_path %}
+                        <div class="animation-container show">
+                            <img id="character-gif" class="character-gif" src="{{ gif_path }}" alt="Cartoon Girl Emotion">
+                        </div>
+                    {% endif %}
                     <h3>Sentiment: 
                         {% if sentiment == 'Positive' %}
                             <span class="sentiment-positive">{{ sentiment }} 😊</span>
@@ -147,36 +149,6 @@
                             });
                         </script>
                     {% endif %}
-                    <!-- JavaScript to Switch GIF Based on Emotion -->
-                    <script>
-                        document.addEventListener('DOMContentLoaded', () => {
-                            const characterGif = document.getElementById('character-gif');
-                            let emotion = "{{ emotion | lower }}"; // Use Jinja2 filter to lowercase
-                            emotion = emotion.trim(); // Trim any whitespace
-                            console.log("Detected emotion:", emotion); // Debugging
-
-                            const gifMap = {
-                                'happy': '/static/cartoon-girl-happy.gif',
-                                'excited': '/static/cartoon-girl-happy.gif',
-                                'sad': '/static/cartoon-girl-sad.gif',
-                                'disappointed': '/static/cartoon-girl-sad.gif',
-                                'angry': '/static/cartoon-girl-angry.gif',
-                                'frustrated': '/static/cartoon-girl-angry.gif',
-                                'surprised': '/static/cartoon-girl-surprised.gif',
-                                'confused': '/static/cartoon-girl-confused.gif',
-                                'neutral': '/static/cartoon-girl-neutral.gif'
-                            };
-
-                            if (!(emotion in gifMap)) {
-                                console.error("Emotion not found in gifMap:", emotion);
-                                emotion = 'neutral'; // Fallback to neutral if emotion is invalid
-                            }
-
-                            const gifSrc = `${gifMap[emotion]}?t=${Date.now()}`; // Cache-busting query parameter
-                            console.log("Selected GIF:", gifSrc); // Debugging
-                            characterGif.src = gifSrc; // Update the GIF source
-                        });
-                    </script>
                 </div>
             {% endif %}
         </div>
