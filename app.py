@@ -10,7 +10,7 @@ def index():
     emotion = None
     confidence = None
     scores = None
-    gif_path = "static/cartoon-girl-neutral.gif"  # Default GIF for GET requests
+    gif_path = None  # Initialize as None, so no GIF is shown on GET request
 
     if request.method == 'POST':
         input_text = request.form['text'].lower()  # Convert to lowercase for easier keyword matching
@@ -82,6 +82,7 @@ def index():
         confidence = abs(compound) * 100  # Absolute value for display purposes
 
         # Map emotion to GIF
+        print(f"Emotion before mapping: {emotion}")  # Debug
         gif_mapping = {
             "Happy": "cartoon-girl-happy.gif",
             "Sad": "cartoon-girl-sad.gif",
@@ -89,9 +90,9 @@ def index():
             "Surprised": "cartoon-girl-surprised.gif",
             "Confused": "cartoon-girl-confused.gif",
             "Neutral": "cartoon-girl-neutral.gif",
-            "Frustrated": "cartoon-girl-angry.gif",  # Fallback to Angry
-            "Excited": "cartoon-girl-happy.gif",  # Fallback to Happy
-            "Disappointed": "cartoon-girl-sad.gif"  # Fallback to Sad
+            "Frustrated": "cartoon-girl-angry.gif",
+            "Excited": "cartoon-girl-happy.gif",
+            "Disappointed": "cartoon-girl-sad.gif"
         }
 
         # Get the GIF path
