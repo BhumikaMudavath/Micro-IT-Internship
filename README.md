@@ -23,3 +23,5 @@ Sentiment-Analysis-Tool/<br>
 │   └── background.jpg<br>
 ├── requirements.txt<br>
 └── README.md<br>
+### Deployment
+Access the app here](https://sentimental-analysis-tool-w9pj.onrender.com).
