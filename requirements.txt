@@ -1,5 +1,4 @@
-Python 3.9 or higher
-Flask
-vaderSentiment
-Bootstrap 5.3 (via CDN)
-Chart.js (via CDN)
+Flask==3.0.3
+vaderSentiment==3.3.2
+Bootstrap 5.3 
+Chart.js 
